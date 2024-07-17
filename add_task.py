@@ -19,7 +19,7 @@ def add_task(name: str,description: str,due_on: str, token: str, board_id: str, 
             "projects": board_id,
             "notes": description,
             "due_on": due_on,
-            "section_id": section_id
+            "section_gid": section_id
         }
     } # dict | The task to create.
 
