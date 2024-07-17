@@ -4,39 +4,33 @@ import asana
 from asana.rest import ApiException
 from pprint import pprint
 
-#load the api key with dotenv
-load_dotenv()
-token = os.getenv('ASANA_API_KEY')
-board_id = os.getenv('BOARD_ID')
+#due_on is a str in ISO format, 2000-12-31
+def add_task(name: str,description: str,due_on: str, token: str, board_id: str, section_id: str):
 
-#These are task specific and will be filled in by the loop
-name = 'Test py task'
-description = 'Task from Python'
-due_on = '2010-01-01'
+    configuration = asana.Configuration()
+    configuration.access_token = token
+    api_client = asana.ApiClient(configuration)
 
-configuration = asana.Configuration()
-configuration.access_token = token
-api_client = asana.ApiClient(configuration)
+    # create an instance of the API class
+    tasks_api_instance = asana.TasksApi(api_client)
+    body = {
+        "data": {
+            "name": name,
+            "projects": board_id,
+            "notes": description,
+            "due_on": due_on,
+            "section_id": section_id
+        }
+    } # dict | The task to create.
 
-# create an instance of the API class
-tasks_api_instance = asana.TasksApi(api_client)
-body = {
-    "data": {
-        "name": name,
-        "projects": board_id,
-        "notes": description,
-        "due_on": due_on
+
+    opts = {
+        'opt_fields': "gid,name,notes,projects,created_at"
     }
-} # dict | The task to create.
 
-
-opts = {
-    'opt_fields': "gid,name,notes,projects,created_at"
-}
-
-try:
-    # Create a task
-    api_response = tasks_api_instance.create_task(body, opts)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling TasksApi->create_task: %s\n" % e)
+    try:
+        # Create a task
+        api_response = tasks_api_instance.create_task(body, opts)
+        return(api_response)
+    except ApiException as e:
+        return("Exception when calling TasksApi->create_task: %s\n" % e)
