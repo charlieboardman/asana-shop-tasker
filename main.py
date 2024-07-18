@@ -11,4 +11,4 @@ load_dotenv()
 token = os.getenv('ASANA_API_KEY')
 board_id = os.getenv('BOARD_ID')
 
-add_task('test', 'test with section','2002-01-12',token,board_id,'blackrunner')
+add_task('test lol', 'test with section','2002-01-12',token,board_id,'blackrunner')
